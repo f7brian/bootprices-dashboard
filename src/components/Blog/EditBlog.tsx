@@ -303,7 +303,7 @@ export default function EditBlog() {
             Description <span className="text-red-500">*</span>
           </label>
           <Editor
-            apiKey="4kjrncewwa4057zz04om0mle4q3to49bypq57bh6qgq5f0n3"
+            apiKey="jx8w5eg4ntbtor7ytgxcbut01q4z73zx8c1xtzu9htqyj4bq"
             value={description}
             init={{
               plugins:
