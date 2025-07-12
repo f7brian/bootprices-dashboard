@@ -15,7 +15,7 @@ import {
   useUpdateBlogMutation,
 } from "@/redux/api/blogApi";
 import { Editor } from "@tinymce/tinymce-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { BeautifulPageLoading } from "../ui/BeautifulSpinner";
 import Image from "next/image";
@@ -43,12 +43,12 @@ export default function EditBlog() {
   const [description, setDescription] = useState("");
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  const params = useSearchParams();
+  const params = useParams();
   const router = useRouter();
-  const id = params.get("id");
-  console.log("id blog", id);
+  const slug = params.slug;
+  console.log("slug blog", slug);
 
-  const { data, isLoading: isFetching } = useGetSingleBlogQuery(id);
+  const { data, isLoading: isFetching } = useGetSingleBlogQuery(slug);
   console.log("single data", data?.data);
 
   const [editBlogFn, { isLoading }] = useUpdateBlogMutation();
@@ -141,7 +141,7 @@ export default function EditBlog() {
       }
 
       // Call the update mutation with id and formData
-      const result = await editBlogFn({ id, formData }).unwrap();
+      const result = await editBlogFn({ slug, formData }).unwrap();
 
       if (result) {
         toast.success("Blog updated successfully!");
