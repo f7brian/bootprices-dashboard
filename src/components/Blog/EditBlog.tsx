@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   useGetSingleBlogByIdQuery,
-  useGetSingleBlogQuery,
   useUpdateBlogMutation,
 } from "@/redux/api/blogApi";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,7 +46,7 @@ export default function EditBlog() {
   const params = useSearchParams();
   const router = useRouter();
   const id = params.get("id");
-  const slug = params.get("slug");
+  // const slug = params.get("slug");
   console.log("slug blog", id);
 
   const { data, isLoading: isFetching } = useGetSingleBlogByIdQuery(id);
