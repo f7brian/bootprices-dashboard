@@ -5,20 +5,21 @@ import type React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Cloud } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
+  useGetSingleBlogByIdQuery,
   useGetSingleBlogQuery,
   useUpdateBlogMutation,
 } from "@/redux/api/blogApi";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
-import { useParams, useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { BeautifulPageLoading } from "../ui/BeautifulSpinner";
+import { Cloud } from "lucide-react";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { BeautifulPageLoading } from "../ui/BeautifulSpinner";
 
 // Zod validation schema - make photo optional for edit
 const blogSchema = z.object({
@@ -43,12 +44,13 @@ export default function EditBlog() {
   const [description, setDescription] = useState("");
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  const params = useParams();
+  const params = useSearchParams();
   const router = useRouter();
-  const slug = params.slug;
-  console.log("slug blog", slug);
+  const id = params.get("id");
+  const slug = params.get("slug");
+  console.log("slug blog", id);
 
-  const { data, isLoading: isFetching } = useGetSingleBlogQuery(slug);
+  const { data, isLoading: isFetching } = useGetSingleBlogByIdQuery(id);
   console.log("single data", data?.data);
 
   const [editBlogFn, { isLoading }] = useUpdateBlogMutation();
@@ -58,7 +60,6 @@ export default function EditBlog() {
     handleSubmit,
     setValue,
     formState: { errors },
-
   } = useForm<BlogFormData>({
     resolver: zodResolver(blogSchema),
   });
@@ -141,11 +142,11 @@ export default function EditBlog() {
       }
 
       // Call the update mutation with id and formData
-      const result = await editBlogFn({ slug, formData }).unwrap();
+      const result = await editBlogFn({ id, formData }).unwrap();
 
       if (result) {
         toast.success("Blog updated successfully!");
-        router.push("/blog")
+        router.push("/blog");
       }
     } catch (error) {
       console.error("Error updating blog:", error);
@@ -158,7 +159,7 @@ export default function EditBlog() {
       <div className="container mx-auto">
         <BeautifulPageLoading text="Loading blog data..." variant="rainbow" />
       </div>
-    )
+    );
   }
 
   if (!data?.data) {

@@ -14,6 +14,12 @@ const blogApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getSingleBlogById: builder.query({
+      query: (id) => ({
+        url: `/blogs/by-id/${id}`,
+        method: "GET",
+      }),
+    }),
     createBlog: builder.mutation({
       query: (formData) => ({
         url: `/blogs`,
@@ -43,4 +49,5 @@ export const {
   useCreateBlogMutation,
   useUpdateBlogMutation,
   useDeleteBlogMutation,
+  useGetSingleBlogByIdQuery
 } = blogApi;

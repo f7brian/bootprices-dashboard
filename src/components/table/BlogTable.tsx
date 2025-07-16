@@ -14,6 +14,7 @@ interface blog {
   description: string;
   status: string;
   photo: string | StaticImageData; // Assuming image URL or base64 string
+  slug: string,
 }
 
 interface EmployeeTableProps {
@@ -134,7 +135,7 @@ export default function BlogTable({
                     />
 
                     <td className="py-3 mt-4 text-center px-4 flex items-center justify-center">
-                      <Link href={`/edit-blog?id=${blog?.id}`}>
+                      <Link href={`/edit-blog?slug=${blog?.slug}&id=${blog?.id}`}>
                         <LiaEditSolid className="h-5 w-5 text-gray-600 hover:text-blue-600 transition-colors" />
                       </Link>
                       <button
